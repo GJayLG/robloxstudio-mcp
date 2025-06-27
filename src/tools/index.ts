@@ -426,4 +426,19 @@ export class RobloxStudioTools {
       ]
     };
   }
+
+  async setScriptSource(instancePath: string, source: string) {
+    if (!instancePath || typeof source !== 'string') {
+      throw new Error('Instance path and source code string are required for set_script_source');
+    }
+    const response = await this.client.request('/api/set-script-source', { instancePath, source });
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(response, null, 2)
+        }
+      ]
+    };
+  }
 }

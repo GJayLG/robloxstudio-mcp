@@ -500,6 +500,8 @@ processRequest = function(request)
 		return handlers.setRelativeProperty(data)
 	elseif endpoint == "/api/get-script-source" then
 		return handlers.getScriptSource(data)
+	elseif endpoint == "/api/set-script-source" then
+		return handlers.setScriptSource(data)
 	else
 		return { error = "Unknown endpoint: " .. tostring(endpoint) }
 	end
@@ -2081,6 +2083,83 @@ handlers.getScriptSource = function(requestData)
 		return result
 	else
 		return { error = "Failed to get script source: " .. tostring(result) }
+	end
+end
+
+-- Safe Script Source Setting Handler (NO loadstring/setfenv)
+handlers.setScriptSource = function(requestData)
+	local instancePath = requestData.instancePath
+	local newSource = requestData.source
+	
+	if not instancePath or not newSource then
+		return { error = "Instance path and source are required" }
+	end
+	
+	local instance = getInstanceByPath(instancePath)
+	if not instance then
+		return { error = "Instance not found: " .. instancePath }
+	end
+	
+	-- Check if the instance is a script
+	if not instance:IsA("BaseScript") then
+		return { error = "Instance is not a script: " .. instance.ClassName }
+	end
+	
+	-- Approach 1: Try direct source assignment (safest)
+	local success, result = pcall(function()
+		local oldSource = instance.Source
+		instance.Source = newSource
+		
+		-- Create undo waypoint
+		ChangeHistoryService:SetWaypoint("Set script source: " .. instance.Name)
+		
+		return {
+			success = true,
+			instancePath = instancePath,
+			oldSourceLength = string.len(oldSource),
+			newSourceLength = string.len(newSource),
+			message = "Script source updated successfully"
+		}
+	end)
+	
+	if success then
+		return result
+	else
+		-- Approach 2: Try create and replace method if direct assignment fails
+		local replaceSuccess, replaceResult = pcall(function()
+			local parent = instance.Parent
+			local name = instance.Name
+			local className = instance.ClassName
+			local enabled = instance.Enabled
+			
+			-- Create new script with the new source
+			local newScript = Instance.new(className)
+			newScript.Name = name
+			newScript.Source = newSource
+			newScript.Enabled = enabled
+			
+			-- Replace the old script
+			newScript.Parent = parent
+			instance:Destroy()
+			
+			ChangeHistoryService:SetWaypoint("Replace script: " .. name)
+			
+			return {
+				success = true,
+				instancePath = getInstancePath(newScript),
+				method = "replace",
+				message = "Script replaced successfully with new source"
+			}
+		end)
+		
+		if replaceSuccess then
+			return replaceResult
+		else
+			return { 
+				error = "Failed to set script source. Direct assignment failed: " .. tostring(result) .. 
+				        ". Replace method failed: " .. tostring(replaceResult)
+			}
+		end
 	end
 end
 

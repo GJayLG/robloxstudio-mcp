@@ -616,6 +616,24 @@ class RobloxStudioMCPServer {
               },
               required: ['instancePath']
             }
+          },
+          {
+            name: 'set_script_source',
+            description: 'Safely set the source code of a script object without using loadstring (Studio only)',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                instancePath: {
+                  type: 'string',
+                  description: 'Path to the script instance (e.g., "game.ServerScriptService.MainScript")'
+                },
+                source: {
+                  type: 'string',
+                  description: 'New source code for the script'
+                }
+              },
+              required: ['instancePath', 'source']
+            }
           }
         ]
       };
@@ -693,6 +711,8 @@ class RobloxStudioMCPServer {
           // Script Management Tools
           case 'get_script_source':
             return await this.tools.getScriptSource((args as any)?.instancePath as string);
+          case 'set_script_source':
+            return await this.tools.setScriptSource((args as any)?.instancePath as string, (args as any)?.source as string);
 
           default:
             throw new McpError(
