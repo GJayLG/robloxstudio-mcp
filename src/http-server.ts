@@ -6,6 +6,31 @@ import { BridgeService } from './bridge-service.js';
 export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService) {
   const app = express();
   let pluginConnected = false;
+  let mcpServerActive = false;
+  let lastMCPActivity = 0;
+  let mcpServerStartTime = 0;
+
+  // Track MCP server lifecycle
+  const setMCPServerActive = (active: boolean) => {
+    mcpServerActive = active;
+    if (active) {
+      mcpServerStartTime = Date.now();
+      lastMCPActivity = Date.now();
+    } else {
+      mcpServerStartTime = 0;
+      lastMCPActivity = 0;
+    }
+  };
+
+  const trackMCPActivity = () => {
+    if (mcpServerActive) {
+      lastMCPActivity = Date.now();
+    }
+  };
+
+  const isMCPServerActive = () => {
+    return mcpServerActive && (Date.now() - lastMCPActivity < 15000); // 15 second timeout
+  };
 
   app.use(cors());
   app.use(express.json({ limit: '50mb' }));
@@ -13,7 +38,13 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
 
   // Health check endpoint
   app.get('/health', (req, res) => {
-    res.json({ status: 'ok', service: 'robloxstudio-mcp' });
+    res.json({ 
+      status: 'ok', 
+      service: 'robloxstudio-mcp',
+      pluginConnected,
+      mcpServerActive: isMCPServerActive(),
+      uptime: mcpServerActive ? Date.now() - mcpServerStartTime : 0
+    });
   });
 
   // Plugin readiness endpoint
@@ -22,18 +53,44 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
     res.json({ success: true });
   });
 
-  // Check if plugin is connected
+  // Enhanced status endpoint
   app.get('/status', (req, res) => {
-    res.json({ pluginConnected });
+    res.json({ 
+      pluginConnected,
+      mcpServerActive: isMCPServerActive(),
+      lastMCPActivity,
+      uptime: mcpServerActive ? Date.now() - mcpServerStartTime : 0
+    });
   });
 
-  // Polling endpoint for Studio plugin
+  // Enhanced polling endpoint for Studio plugin
   app.get('/poll', (req, res) => {
+    if (!isMCPServerActive()) {
+      res.status(503).json({ 
+        error: 'MCP server not connected',
+        pluginConnected: true,
+        mcpConnected: false,
+        request: null
+      });
+      return;
+    }
+    
+    trackMCPActivity();
+    
     const pendingRequest = bridge.getPendingRequest();
     if (pendingRequest) {
-      res.json({ request: pendingRequest.request, requestId: pendingRequest.requestId });
+      res.json({ 
+        request: pendingRequest.request, 
+        requestId: pendingRequest.requestId,
+        mcpConnected: true,
+        pluginConnected: true
+      });
     } else {
-      res.json({ request: null });
+      res.json({ 
+        request: null,
+        mcpConnected: true,
+        pluginConnected: true
+      });
     }
   });
 
@@ -48,6 +105,12 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
     }
     
     res.json({ success: true });
+  });
+
+  // Middleware to track MCP activity for all MCP endpoints
+  app.use('/mcp/*', (req, res, next) => {
+    trackMCPActivity();
+    next();
   });
 
   // MCP tool proxy endpoints - these will be called by AI tools
@@ -191,8 +254,11 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
 
 
 
-  // Add method to check if plugin is connected
+  // Add methods to control and check server status
   (app as any).isPluginConnected = () => pluginConnected;
+  (app as any).setMCPServerActive = setMCPServerActive;
+  (app as any).isMCPServerActive = isMCPServerActive;
+  (app as any).trackMCPActivity = trackMCPActivity;
 
   return app;
 }

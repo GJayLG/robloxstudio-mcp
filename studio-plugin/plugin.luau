@@ -219,7 +219,7 @@ urlPadding.Parent = urlInput
 
 -- Status Section
 local statusSection = Instance.new("Frame")
-statusSection.Size = UDim2.new(1, 0, 0, 80)
+statusSection.Size = UDim2.new(1, 0, 0, 95)
 statusSection.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
 statusSection.BorderSizePixel = 0
 statusSection.LayoutOrder = 2
@@ -249,17 +249,31 @@ statusTitle.TextXAlignment = Enum.TextXAlignment.Left
 statusTitle.Parent = statusSection
 
 local statusLabel = Instance.new("TextLabel")
-statusLabel.Size = UDim2.new(1, 0, 0, 32)
+statusLabel.Size = UDim2.new(1, 0, 0, 20)
 statusLabel.Position = UDim2.new(0, 0, 0, 30)
 statusLabel.BackgroundTransparency = 1
 statusLabel.Text = "Disconnected"
 statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 statusLabel.TextScaled = false
 statusLabel.TextSize = 13
-statusLabel.Font = Enum.Font.SourceSans
+statusLabel.Font = Enum.Font.SourceSansBold
 statusLabel.TextXAlignment = Enum.TextXAlignment.Left
 statusLabel.TextWrapped = true
 statusLabel.Parent = statusSection
+
+-- Detailed status label for connection breakdown
+local detailStatusLabel = Instance.new("TextLabel")
+detailStatusLabel.Size = UDim2.new(1, 0, 0, 12)
+detailStatusLabel.Position = UDim2.new(0, 0, 0, 50)
+detailStatusLabel.BackgroundTransparency = 1
+detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+detailStatusLabel.TextColor3 = Color3.fromRGB(156, 163, 175)
+detailStatusLabel.TextScaled = false
+detailStatusLabel.TextSize = 10
+detailStatusLabel.Font = Enum.Font.SourceSans
+detailStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+detailStatusLabel.TextWrapped = true
+detailStatusLabel.Parent = statusSection
 
 -- Connect Button
 local connectButton = Instance.new("TextButton")
@@ -383,22 +397,38 @@ local function pollForRequests()
 		})
 	end)
 
-	if success and result.Success then
+	if success and (result.Success or result.StatusCode == 503) then
 		pluginState.consecutiveFailures = 0
 		pluginState.currentRetryDelay = 0.5
 		pluginState.lastSuccessfulConnection = tick()
 
-		if not statusLabel.Text:find("Connected") then
+		local data = HttpService:JSONDecode(result.Body)
+		local mcpConnected = data.mcpConnected == true
+		
+		-- Update status based on both HTTP server and MCP server status
+		if mcpConnected and not statusLabel.Text:find("Connected") then
 			statusLabel.Text = "Connected"
 			statusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
 			statusText.Text = "ONLINE"
+			detailStatusLabel.Text = "HTTP: ✓  MCP: ✓"
+			detailStatusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
 			stopPulseAnimation()
+		elseif not mcpConnected then
+			-- HTTP server connected but MCP server is not active
+			statusLabel.Text = "Waiting for MCP server"
+			statusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
+			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
+			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
+			statusText.Text = "WAITING"
+			detailStatusLabel.Text = "HTTP: ✓  MCP: ✗"
+			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
+			startPulseAnimation()
 		end
 
-		local data = HttpService:JSONDecode(result.Body)
-		if data.request then
+		-- Process requests only if MCP server is connected
+		if data.request and mcpConnected then
 			local response = processRequest(data.request)
 			sendResponse(data.requestId, response)
 		end
@@ -416,6 +446,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 			statusText.Text = "ERROR"
+			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 			stopPulseAnimation()
 		elseif pluginState.consecutiveFailures > 5 then
 			local waitTime = math.ceil(pluginState.currentRetryDelay)
@@ -424,6 +456,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "RETRY"
+			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		elseif pluginState.consecutiveFailures > 1 then
 			statusLabel.Text = "Connecting (attempt " .. pluginState.consecutiveFailures .. ")"
@@ -431,6 +465,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "CONNECTING"
+			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
 	end
@@ -2170,6 +2206,8 @@ local function updateUIState()
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusText.Text = "CONNECTING"
+		detailStatusLabel.Text = "HTTP: ...  MCP: ..."
+		detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 		connectButton.Text = "Disconnect"
 		startPulseAnimation()
 		
@@ -2192,6 +2230,8 @@ local function updateUIState()
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusText.Text = "OFFLINE"
+		detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+		detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 		connectButton.Text = "Connect"
 		stopPulseAnimation()
 		

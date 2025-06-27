@@ -746,13 +746,26 @@ class RobloxStudioMCPServer {
     await this.server.connect(transport);
     console.error('Roblox Studio MCP server running on stdio');
     
-    // Monitor plugin connection in background
+    // Mark MCP server as active
+    (httpServer as any).setMCPServerActive(true);
+    console.error('MCP server marked as active');
+    
+    // Monitor plugin and MCP server connection status
     console.error('Waiting for Studio plugin to connect...');
     setInterval(() => {
-      if ((httpServer as any).isPluginConnected()) {
-        console.error('Studio plugin connected!');
+      const pluginConnected = (httpServer as any).isPluginConnected();
+      const mcpActive = (httpServer as any).isMCPServerActive();
+      
+      if (pluginConnected && mcpActive) {
+        // Both connected - no need to spam logs
+      } else if (pluginConnected && !mcpActive) {
+        console.error('Studio plugin connected, but MCP server inactive');
+      } else if (!pluginConnected && mcpActive) {
+        console.error('MCP server active, waiting for Studio plugin...');
+      } else {
+        console.error('Waiting for connections...');
       }
-    }, 1000);
+    }, 5000); // Reduced frequency to avoid spam
     
     // Periodic cleanup of old requests
     setInterval(() => {
