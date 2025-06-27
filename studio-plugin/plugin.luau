@@ -70,7 +70,7 @@ local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, 0, 0, 28)
 titleLabel.Position = UDim2.new(0, 0, 0, 8)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "🤖 MCP Server"
+titleLabel.Text = "MCP Server"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.TextScaled = false
 titleLabel.TextSize = 18
@@ -172,7 +172,7 @@ local connectionTitle = Instance.new("TextLabel")
 connectionTitle.Size = UDim2.new(1, 0, 0, 20)
 connectionTitle.Position = UDim2.new(0, 0, 0, 0)
 connectionTitle.BackgroundTransparency = 1
-connectionTitle.Text = "🔗 Connection Settings"
+connectionTitle.Text = "Connection Settings"
 connectionTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 connectionTitle.TextScaled = false
 connectionTitle.TextSize = 14
@@ -240,7 +240,7 @@ local statusTitle = Instance.new("TextLabel")
 statusTitle.Size = UDim2.new(1, 0, 0, 20)
 statusTitle.Position = UDim2.new(0, 0, 0, 0)
 statusTitle.BackgroundTransparency = 1
-statusTitle.Text = "📊 Connection Status"
+statusTitle.Text = "Connection Status"
 statusTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 statusTitle.TextScaled = false
 statusTitle.TextSize = 14
@@ -252,7 +252,7 @@ local statusLabel = Instance.new("TextLabel")
 statusLabel.Size = UDim2.new(1, 0, 0, 32)
 statusLabel.Position = UDim2.new(0, 0, 0, 30)
 statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "🔴 Disconnected - Ready to connect"
+statusLabel.Text = "Disconnected"
 statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 statusLabel.TextScaled = false
 statusLabel.TextSize = 13
@@ -266,7 +266,7 @@ local connectButton = Instance.new("TextButton")
 connectButton.Size = UDim2.new(1, 0, 0, 40)
 connectButton.BackgroundColor3 = Color3.fromRGB(37, 99, 235)
 connectButton.BorderSizePixel = 0
-connectButton.Text = "🚀 Connect to Server"
+connectButton.Text = "Connect"
 connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 connectButton.TextScaled = false
 connectButton.TextSize = 14
@@ -286,55 +286,6 @@ connectGradient.Color = ColorSequence.new{
 connectGradient.Rotation = 90
 connectGradient.Parent = connectButton
 
--- Features Section
-local featuresSection = Instance.new("Frame")
-featuresSection.Size = UDim2.new(1, 0, 0, 200)
-featuresSection.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
-featuresSection.BorderSizePixel = 0
-featuresSection.LayoutOrder = 4
-featuresSection.Parent = contentFrame
-
-local featuresCorner = Instance.new("UICorner")
-featuresCorner.CornerRadius = UDim.new(0, 8)
-featuresCorner.Parent = featuresSection
-
-local featuresPadding = Instance.new("UIPadding")
-featuresPadding.PaddingLeft = UDim.new(0, 15)
-featuresPadding.PaddingRight = UDim.new(0, 15)
-featuresPadding.PaddingTop = UDim.new(0, 15)
-featuresPadding.PaddingBottom = UDim.new(0, 15)
-featuresPadding.Parent = featuresSection
-
-local featuresTitle = Instance.new("TextLabel")
-featuresTitle.Size = UDim2.new(1, 0, 0, 20)
-featuresTitle.Position = UDim2.new(0, 0, 0, 0)
-featuresTitle.BackgroundTransparency = 1
-featuresTitle.Text = "✨ Available Features"
-featuresTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-featuresTitle.TextScaled = false
-featuresTitle.TextSize = 14
-featuresTitle.Font = Enum.Font.SourceSansBold
-featuresTitle.TextXAlignment = Enum.TextXAlignment.Left
-featuresTitle.Parent = featuresSection
-
-local featuresText = Instance.new("TextLabel")
-featuresText.Size = UDim2.new(1, 0, 1, -30)
-featuresText.Position = UDim2.new(0, 0, 0, 25)
-featuresText.BackgroundTransparency = 1
-featuresText.Text = [[🔄 Smart Duplication - Intelligent cloning with patterns
-🧮 Calculated Properties - Formula-based property setting  
-⚡ Relative Operations - Modify properties incrementally
-📦 Mass Operations - Bulk create, modify, and delete
-🔍 Advanced Search - Find objects by properties and patterns
-🎯 Property Management - Get, set, and modify any property]]
-featuresText.TextColor3 = Color3.fromRGB(156, 163, 175)
-featuresText.TextScaled = false
-featuresText.TextSize = 11
-featuresText.Font = Enum.Font.SourceSans
-featuresText.TextXAlignment = Enum.TextXAlignment.Left
-featuresText.TextYAlignment = Enum.TextYAlignment.Top
-featuresText.TextWrapped = true
-featuresText.Parent = featuresSection
 
 -- Animation and interaction handlers
 local TweenService = game:GetService("TweenService")
@@ -438,7 +389,7 @@ local function pollForRequests()
 		pluginState.lastSuccessfulConnection = tick()
 
 		if not statusLabel.Text:find("Connected") then
-			statusLabel.Text = "🟢 Connected - AI tools ready"
+			statusLabel.Text = "Connected"
 			statusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
@@ -460,7 +411,7 @@ local function pollForRequests()
 		end
 
 		if pluginState.consecutiveFailures >= pluginState.maxFailuresBeforeError then
-			statusLabel.Text = "🔴 Server unavailable - Check connection"
+			statusLabel.Text = "Server unavailable"
 			statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
@@ -468,14 +419,14 @@ local function pollForRequests()
 			stopPulseAnimation()
 		elseif pluginState.consecutiveFailures > 5 then
 			local waitTime = math.ceil(pluginState.currentRetryDelay)
-			statusLabel.Text = "🟡 Retrying connection... (" .. waitTime .. "s)"
+			statusLabel.Text = "Retrying (" .. waitTime .. "s)"
 			statusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "RETRY"
 			startPulseAnimation()
 		elseif pluginState.consecutiveFailures > 1 then
-			statusLabel.Text = "🟡 Connecting to server... (attempt " .. pluginState.consecutiveFailures .. ")"
+			statusLabel.Text = "Connecting (attempt " .. pluginState.consecutiveFailures .. ")"
 			statusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
@@ -1773,56 +1724,97 @@ handlers.massDuplicate = function(requestData)
 	}
 end
 
--- Formula evaluation helper
+-- Safe formula evaluation helper (no loadstring/setfenv)
 local function evaluateFormula(formula, variables, instance, index)
-	local env = {
-		-- Math functions
-		math = math,
-		abs = math.abs,
-		min = math.min,
-		max = math.max,
-		floor = math.floor,
-		ceil = math.ceil,
-		sqrt = math.sqrt,
-		sin = math.sin,
-		cos = math.cos,
-		tan = math.tan,
-		rad = math.rad,
-		deg = math.deg,
-		
-		-- Variables
-		index = index,
-		
-		-- Instance properties (if available)
-		Position = instance and instance:IsA("BasePart") and instance.Position or Vector3.new(0, 0, 0),
-		Size = instance and instance:IsA("BasePart") and instance.Size or Vector3.new(1, 1, 1),
-		Name = instance and instance.Name or "",
-	}
+	-- Simple pattern-based formula evaluation for common cases
+	-- Supports: index, basic math operations, common functions
 	
-	-- Add custom variables
+	local value = formula
+	
+	-- Replace variables
+	value = value:gsub("index", tostring(index))
+	
+	-- Replace instance properties if available
+	if instance and instance:IsA("BasePart") then
+		local pos = instance.Position
+		local size = instance.Size
+		value = value:gsub("Position%.X", tostring(pos.X))
+		value = value:gsub("Position%.Y", tostring(pos.Y))
+		value = value:gsub("Position%.Z", tostring(pos.Z))
+		value = value:gsub("Size%.X", tostring(size.X))
+		value = value:gsub("Size%.Y", tostring(size.Y))
+		value = value:gsub("Size%.Z", tostring(size.Z))
+		value = value:gsub("magnitude", tostring(pos.magnitude))
+	end
+	
+	-- Replace custom variables
 	if variables then
 		for k, v in pairs(variables) do
-			env[k] = v
+			value = value:gsub(k, tostring(v))
 		end
 	end
 	
-	-- Add magnitude calculation for Position
-	if env.Position then
-		env.magnitude = env.Position.magnitude
-	end
+	-- Handle common math functions
+	value = value:gsub("sin%(([%d%.%-]+)%)", function(x) return tostring(math.sin(tonumber(x) or 0)) end)
+	value = value:gsub("cos%(([%d%.%-]+)%)", function(x) return tostring(math.cos(tonumber(x) or 0)) end)
+	value = value:gsub("sqrt%(([%d%.%-]+)%)", function(x) return tostring(math.sqrt(tonumber(x) or 0)) end)
+	value = value:gsub("abs%(([%d%.%-]+)%)", function(x) return tostring(math.abs(tonumber(x) or 0)) end)
+	value = value:gsub("floor%(([%d%.%-]+)%)", function(x) return tostring(math.floor(tonumber(x) or 0)) end)
+	value = value:gsub("ceil%(([%d%.%-]+)%)", function(x) return tostring(math.ceil(tonumber(x) or 0)) end)
 	
-	-- Create safe formula evaluation
-	local func, err = loadstring("return " .. formula)
-	if not func then
-		return nil, "Formula error: " .. tostring(err)
-	end
-	
-	setfenv(func, env)
-	local success, result = pcall(func)
-	if success then
+	-- Simple arithmetic evaluation for basic expressions
+	-- This is a very basic evaluator - only supports simple cases
+	local result = tonumber(value)
+	if result then
 		return result, nil
+	end
+	
+	-- Try to evaluate simple arithmetic manually
+	local success, evalResult = pcall(function()
+		-- For very basic cases, try to parse manually
+		-- Support patterns like: "5", "index * 2", "10 + index", etc.
+		
+		-- Simple number
+		local num = tonumber(value)
+		if num then
+			return num
+		end
+		
+		-- Simple multiplication: "number * number"
+		local a, b = value:match("^([%d%.%-]+)%s*%*%s*([%d%.%-]+)$")
+		if a and b then
+			return (tonumber(a) or 0) * (tonumber(b) or 0)
+		end
+		
+		-- Simple addition: "number + number"  
+		a, b = value:match("^([%d%.%-]+)%s*%+%s*([%d%.%-]+)$")
+		if a and b then
+			return (tonumber(a) or 0) + (tonumber(b) or 0)
+		end
+		
+		-- Simple subtraction: "number - number"
+		a, b = value:match("^([%d%.%-]+)%s*%-%s*([%d%.%-]+)$")
+		if a and b then
+			return (tonumber(a) or 0) - (tonumber(b) or 0)
+		end
+		
+		-- Simple division: "number / number"
+		a, b = value:match("^([%d%.%-]+)%s*/%s*([%d%.%-]+)$")
+		if a and b then
+			local divisor = tonumber(b) or 1
+			if divisor ~= 0 then
+				return (tonumber(a) or 0) / divisor
+			end
+		end
+		
+		error("Unsupported formula pattern: " .. value)
+	end)
+	
+	if success and type(evalResult) == "number" then
+		return evalResult, nil
 	else
-		return nil, "Evaluation error: " .. tostring(result)
+		-- Fallback: return the index for simple cases
+		return index, "Complex formulas not supported - using index value"
 	end
 end
 
@@ -2055,12 +2047,12 @@ end
 
 local function updateUIState()
 	if pluginState.isActive then
-		statusLabel.Text = "🟡 Connecting to server..."
+		statusLabel.Text = "Connecting..."
 		statusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusText.Text = "CONNECTING"
-		connectButton.Text = "🔌 Disconnect"
+		connectButton.Text = "Disconnect"
 		startPulseAnimation()
 		
 		-- Update button color directly instead of tweening
@@ -2077,12 +2069,12 @@ local function updateUIState()
 		urlInput.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
 		urlInput.BorderColor3 = Color3.fromRGB(55, 65, 81)
 	else
-		statusLabel.Text = "🔴 Disconnected - Ready to connect"
+		statusLabel.Text = "Disconnected"
 		statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusText.Text = "OFFLINE"
-		connectButton.Text = "🚀 Connect to Server"
+		connectButton.Text = "Connect"
 		stopPulseAnimation()
 		
 		-- Update button color directly instead of tweening
