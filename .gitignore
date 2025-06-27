@@ -49,3 +49,8 @@ coverage/
 # Temporary folders
 tmp/
 temp/
+
+# AI-generated content
+banner-prompt.txt
+forum-post.md
+forum-title.txt
