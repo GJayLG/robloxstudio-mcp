@@ -601,6 +601,21 @@ class RobloxStudioMCPServer {
               },
               required: ['paths', 'propertyName', 'operation', 'value']
             }
+          },
+          // Script Management Tools
+          {
+            name: 'get_script_source',
+            description: 'Get the source code of a script object (LocalScript, Script, or ModuleScript)',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                instancePath: {
+                  type: 'string',
+                  description: 'Path to the script instance (e.g., "game.ServerScriptService.MainScript")'
+                }
+              },
+              required: ['instancePath']
+            }
           }
         ]
       };
@@ -674,6 +689,10 @@ class RobloxStudioMCPServer {
           // Relative Property Tools
           case 'set_relative_property':
             return await this.tools.setRelativeProperty((args as any)?.paths as string[], (args as any)?.propertyName as string, (args as any)?.operation, (args as any)?.value, (args as any)?.component);
+          
+          // Script Management Tools
+          case 'get_script_source':
+            return await this.tools.getScriptSource((args as any)?.instancePath as string);
 
           default:
             throw new McpError(

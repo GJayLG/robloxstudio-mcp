@@ -410,4 +410,20 @@ export class RobloxStudioTools {
       ]
     };
   }
+
+  // Script Management Tools
+  async getScriptSource(instancePath: string) {
+    if (!instancePath) {
+      throw new Error('Instance path is required for get_script_source');
+    }
+    const response = await this.client.request('/api/get-script-source', { instancePath });
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(response, null, 2)
+        }
+      ]
+    };
+  }
 }

@@ -498,6 +498,8 @@ processRequest = function(request)
 		return handlers.setCalculatedProperty(data)
 	elseif endpoint == "/api/set-relative-property" then
 		return handlers.setRelativeProperty(data)
+	elseif endpoint == "/api/get-script-source" then
+		return handlers.getScriptSource(data)
 	else
 		return { error = "Unknown endpoint: " .. tostring(endpoint) }
 	end
@@ -2043,6 +2045,43 @@ handlers.setRelativeProperty = function(requestData)
 		operation = operation,
 		value = value
 	}
+end
+
+-- Script Source Management Handler
+handlers.getScriptSource = function(requestData)
+	local instancePath = requestData.instancePath
+	
+	if not instancePath then
+		return { error = "Instance path is required" }
+	end
+	
+	local instance = getInstanceByPath(instancePath)
+	if not instance then
+		return { error = "Instance not found: " .. instancePath }
+	end
+	
+	-- Check if the instance is a script
+	if not instance:IsA("BaseScript") then
+		return { error = "Instance is not a script: " .. instance.ClassName }
+	end
+	
+	local success, result = pcall(function()
+		return {
+			instancePath = instancePath,
+			className = instance.ClassName,
+			name = instance.Name,
+			source = instance.Source,
+			enabled = instance.Enabled,
+			sourceLength = string.len(instance.Source),
+			lineCount = select(2, string.gsub(instance.Source, '\n', '\n')) + 1
+		}
+	end)
+	
+	if success then
+		return result
+	else
+		return { error = "Failed to get script source: " .. tostring(result) }
+	end
 end
 
 local function updateUIState()
