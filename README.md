@@ -31,7 +31,7 @@ claude mcp add robloxstudio -- npx -y robloxstudio-mcp
 The MCP server requires a companion Roblox Studio plugin:
 
 1. **Roblox Creator Store**:
-   - Install from: https://create.roblox.com/store/asset/132985143757536
+   - Install from: https://create.roblox.com/store/asset/75577477776988
    - Click "Install" - Opens in Studio automatically
 
 2. **Manual download**:
