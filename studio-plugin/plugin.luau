@@ -140,7 +140,7 @@ contentFrame.BackgroundTransparency = 1
 contentFrame.BorderSizePixel = 0
 contentFrame.ScrollBarThickness = 6
 contentFrame.ScrollBarImageColor3 = Color3.fromRGB(99, 102, 241)
-contentFrame.CanvasSize = UDim2.new(0, 0, 0, 255)
+contentFrame.CanvasSize = UDim2.new(0, 0, 0, 243)
 contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.None
 contentFrame.Parent = mainFrame
 
@@ -292,13 +292,14 @@ local connectCorner = Instance.new("UICorner")
 connectCorner.CornerRadius = UDim.new(0, 12)
 connectCorner.Parent = connectButton
 
-local connectGradient = Instance.new("UIGradient")
-connectGradient.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
-}
-connectGradient.Rotation = 45
-connectGradient.Parent = connectButton
+-- Remove gradient to fix text visibility
+-- local connectGradient = Instance.new("UIGradient")
+-- connectGradient.Color = ColorSequence.new{
+--	ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
+--	ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
+-- }
+-- connectGradient.Rotation = 45
+-- connectGradient.Parent = connectButton
 
 
 -- Animation and interaction handlers
@@ -2217,11 +2218,7 @@ local function updateUIState()
 			connectButton.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		end
 		
-		connectGradient.Color = ColorSequence.new{
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(239, 68, 68)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(220, 38, 38))
-		}
-		connectGradient.Rotation = 45
+		-- No gradient needed
 		
 		urlInput.TextEditable = false
 		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
@@ -2243,11 +2240,7 @@ local function updateUIState()
 			connectButton.BackgroundColor3 = Color3.fromRGB(16, 185, 129)
 		end
 		
-		connectGradient.Color = ColorSequence.new{
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
-		}
-		connectGradient.Rotation = 45
+		-- No gradient needed
 		
 		urlInput.TextEditable = true
 		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
