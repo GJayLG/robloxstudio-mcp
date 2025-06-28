@@ -31,7 +31,7 @@ screenGui.Title = "MCP Server v1.5.0"
 -- Main container with modern styling
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(1, 0, 1, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 28)
+mainFrame.BackgroundColor3 = Color3.fromRGB(17, 24, 39)
 mainFrame.BorderSizePixel = 0
 mainFrame.Parent = screenGui
 
@@ -43,7 +43,7 @@ mainCorner.Parent = mainFrame
 local headerFrame = Instance.new("Frame")
 headerFrame.Size = UDim2.new(1, 0, 0, 60)
 headerFrame.Position = UDim2.new(0, 0, 0, 0)
-headerFrame.BackgroundColor3 = Color3.fromRGB(37, 99, 235)
+headerFrame.BackgroundColor3 = Color3.fromRGB(59, 130, 246)
 headerFrame.BorderSizePixel = 0
 headerFrame.Parent = mainFrame
 
@@ -53,10 +53,10 @@ headerCorner.Parent = headerFrame
 
 local headerGradient = Instance.new("UIGradient")
 headerGradient.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 99, 235)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(29, 78, 216))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(59, 130, 246)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(147, 51, 234))
 }
-headerGradient.Rotation = 90
+headerGradient.Rotation = 45
 headerGradient.Parent = headerFrame
 
 -- Title with icon
@@ -74,7 +74,7 @@ titleLabel.Text = "MCP Server"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.TextScaled = false
 titleLabel.TextSize = 18
-titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.Font = Enum.Font.Jura
 titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 titleLabel.Parent = titleContainer
 
@@ -86,7 +86,7 @@ versionLabel.Text = "AI Integration • v1.5.0"
 versionLabel.TextColor3 = Color3.fromRGB(191, 219, 254)
 versionLabel.TextScaled = false
 versionLabel.TextSize = 12
-versionLabel.Font = Enum.Font.SourceSans
+versionLabel.Font = Enum.Font.Jura
 versionLabel.TextXAlignment = Enum.TextXAlignment.Left
 versionLabel.Parent = titleContainer
 
@@ -128,7 +128,7 @@ statusText.Text = "OFFLINE"
 statusText.TextColor3 = Color3.fromRGB(255, 255, 255)
 statusText.TextScaled = false
 statusText.TextSize = 8
-statusText.Font = Enum.Font.SourceSansBold
+statusText.Font = Enum.Font.Jura
 statusText.TextXAlignment = Enum.TextXAlignment.Center
 statusText.Parent = statusContainer
 
@@ -138,21 +138,21 @@ contentFrame.Size = UDim2.new(1, -20, 1, -80)
 contentFrame.Position = UDim2.new(0, 10, 0, 70)
 contentFrame.BackgroundTransparency = 1
 contentFrame.BorderSizePixel = 0
-contentFrame.ScrollBarThickness = 4
-contentFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+contentFrame.ScrollBarThickness = 6
+contentFrame.ScrollBarImageColor3 = Color3.fromRGB(99, 102, 241)
 contentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 contentFrame.Parent = mainFrame
 
 local contentLayout = Instance.new("UIListLayout")
-contentLayout.Padding = UDim.new(0, 15)
+contentLayout.Padding = UDim.new(0, 12)
 contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 contentLayout.Parent = contentFrame
 
 -- Connection Section
 local connectionSection = Instance.new("Frame")
-connectionSection.Size = UDim2.new(1, 0, 0, 120)
-connectionSection.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
+connectionSection.Size = UDim2.new(1, 0, 0, 110)
+connectionSection.BackgroundColor3 = Color3.fromRGB(31, 41, 55)
 connectionSection.BorderSizePixel = 0
 connectionSection.LayoutOrder = 1
 connectionSection.Parent = contentFrame
@@ -176,7 +176,7 @@ connectionTitle.Text = "Connection Settings"
 connectionTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 connectionTitle.TextScaled = false
 connectionTitle.TextSize = 14
-connectionTitle.Font = Enum.Font.SourceSansBold
+connectionTitle.Font = Enum.Font.Jura
 connectionTitle.TextXAlignment = Enum.TextXAlignment.Left
 connectionTitle.Parent = connectionSection
 
@@ -188,21 +188,21 @@ urlLabel.Text = "Server URL"
 urlLabel.TextColor3 = Color3.fromRGB(156, 163, 175)
 urlLabel.TextScaled = false
 urlLabel.TextSize = 12
-urlLabel.Font = Enum.Font.SourceSans
+urlLabel.Font = Enum.Font.Jura
 urlLabel.TextXAlignment = Enum.TextXAlignment.Left
 urlLabel.Parent = connectionSection
 
 local urlInput = Instance.new("TextBox")
 urlInput.Size = UDim2.new(1, 0, 0, 32)
 urlInput.Position = UDim2.new(0, 0, 0, 50)
-urlInput.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
 urlInput.BorderSizePixel = 1
-urlInput.BorderColor3 = Color3.fromRGB(75, 85, 99)
+urlInput.BorderColor3 = Color3.fromRGB(99, 102, 241)
 urlInput.Text = "http://localhost:3002"
 urlInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 urlInput.TextScaled = false
 urlInput.TextSize = 12
-urlInput.Font = Enum.Font.SourceSans
+urlInput.Font = Enum.Font.Jura
 urlInput.ClearTextOnFocus = false
 urlInput.PlaceholderText = "Enter server URL..."
 urlInput.PlaceholderColor3 = Color3.fromRGB(107, 114, 128)
@@ -219,8 +219,8 @@ urlPadding.Parent = urlInput
 
 -- Status Section
 local statusSection = Instance.new("Frame")
-statusSection.Size = UDim2.new(1, 0, 0, 95)
-statusSection.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
+statusSection.Size = UDim2.new(1, 0, 0, 85)
+statusSection.BackgroundColor3 = Color3.fromRGB(31, 41, 55)
 statusSection.BorderSizePixel = 0
 statusSection.LayoutOrder = 2
 statusSection.Parent = contentFrame
@@ -244,7 +244,7 @@ statusTitle.Text = "Connection Status"
 statusTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 statusTitle.TextScaled = false
 statusTitle.TextSize = 14
-statusTitle.Font = Enum.Font.SourceSansBold
+statusTitle.Font = Enum.Font.Jura
 statusTitle.TextXAlignment = Enum.TextXAlignment.Left
 statusTitle.Parent = statusSection
 
@@ -256,7 +256,7 @@ statusLabel.Text = "Disconnected"
 statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 statusLabel.TextScaled = false
 statusLabel.TextSize = 13
-statusLabel.Font = Enum.Font.SourceSansBold
+statusLabel.Font = Enum.Font.Jura
 statusLabel.TextXAlignment = Enum.TextXAlignment.Left
 statusLabel.TextWrapped = true
 statusLabel.Parent = statusSection
@@ -270,34 +270,34 @@ detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
 detailStatusLabel.TextColor3 = Color3.fromRGB(156, 163, 175)
 detailStatusLabel.TextScaled = false
 detailStatusLabel.TextSize = 10
-detailStatusLabel.Font = Enum.Font.SourceSans
+detailStatusLabel.Font = Enum.Font.Jura
 detailStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 detailStatusLabel.TextWrapped = true
 detailStatusLabel.Parent = statusSection
 
 -- Connect Button
 local connectButton = Instance.new("TextButton")
-connectButton.Size = UDim2.new(1, 0, 0, 40)
-connectButton.BackgroundColor3 = Color3.fromRGB(37, 99, 235)
+connectButton.Size = UDim2.new(1, 0, 0, 48)
+connectButton.BackgroundColor3 = Color3.fromRGB(16, 185, 129)
 connectButton.BorderSizePixel = 0
 connectButton.Text = "Connect"
 connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 connectButton.TextScaled = false
-connectButton.TextSize = 14
-connectButton.Font = Enum.Font.SourceSansBold
+connectButton.TextSize = 16
+connectButton.Font = Enum.Font.Jura
 connectButton.LayoutOrder = 3
 connectButton.Parent = contentFrame
 
 local connectCorner = Instance.new("UICorner")
-connectCorner.CornerRadius = UDim.new(0, 8)
+connectCorner.CornerRadius = UDim.new(0, 12)
 connectCorner.Parent = connectButton
 
 local connectGradient = Instance.new("UIGradient")
 connectGradient.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 99, 235)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(29, 78, 216))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
 }
-connectGradient.Rotation = 90
+connectGradient.Rotation = 45
 connectGradient.Parent = connectButton
 
 
@@ -308,12 +308,12 @@ local buttonHover = false
 -- Button hover effects (simplified without tweening)
 connectButton.MouseEnter:Connect(function()
 	buttonHover = true
-	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(29, 78, 216) or Color3.fromRGB(220, 38, 38)
+	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(5, 150, 105) or Color3.fromRGB(220, 38, 38)
 end)
 
 connectButton.MouseLeave:Connect(function()
 	buttonHover = false
-	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(37, 99, 235) or Color3.fromRGB(239, 68, 68)
+	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(16, 185, 129) or Color3.fromRGB(239, 68, 68)
 end)
 
 -- Status indicator pulse animation
@@ -2220,10 +2220,11 @@ local function updateUIState()
 			ColorSequenceKeypoint.new(0, Color3.fromRGB(239, 68, 68)),
 			ColorSequenceKeypoint.new(1, Color3.fromRGB(220, 38, 38))
 		}
+		connectGradient.Rotation = 45
 		
 		urlInput.TextEditable = false
-		urlInput.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
-		urlInput.BorderColor3 = Color3.fromRGB(55, 65, 81)
+		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
+		urlInput.BorderColor3 = Color3.fromRGB(75, 85, 99)
 	else
 		statusLabel.Text = "Disconnected"
 		statusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
@@ -2237,17 +2238,18 @@ local function updateUIState()
 		
 		-- Update button color directly instead of tweening
 		if not buttonHover then
-			connectButton.BackgroundColor3 = Color3.fromRGB(37, 99, 235)
+			connectButton.BackgroundColor3 = Color3.fromRGB(16, 185, 129)
 		end
 		
 		connectGradient.Color = ColorSequence.new{
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 99, 235)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(29, 78, 216))
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
 		}
+		connectGradient.Rotation = 45
 		
 		urlInput.TextEditable = true
-		urlInput.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
-		urlInput.BorderColor3 = Color3.fromRGB(75, 85, 99)
+		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
+		urlInput.BorderColor3 = Color3.fromRGB(99, 102, 241)
 	end
 end
 
