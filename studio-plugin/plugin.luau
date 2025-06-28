@@ -140,8 +140,8 @@ contentFrame.BackgroundTransparency = 1
 contentFrame.BorderSizePixel = 0
 contentFrame.ScrollBarThickness = 6
 contentFrame.ScrollBarImageColor3 = Color3.fromRGB(99, 102, 241)
-contentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+contentFrame.CanvasSize = UDim2.new(0, 0, 0, 280)
+contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.None
 contentFrame.Parent = mainFrame
 
 local contentLayout = Instance.new("UIListLayout")
@@ -266,7 +266,7 @@ local detailStatusLabel = Instance.new("TextLabel")
 detailStatusLabel.Size = UDim2.new(1, 0, 0, 12)
 detailStatusLabel.Position = UDim2.new(0, 0, 0, 50)
 detailStatusLabel.BackgroundTransparency = 1
-detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+detailStatusLabel.Text = "HTTP: X  MCP: X"
 detailStatusLabel.TextColor3 = Color3.fromRGB(156, 163, 175)
 detailStatusLabel.TextScaled = false
 detailStatusLabel.TextSize = 10
@@ -412,7 +412,7 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(34, 197, 94)
 			statusText.Text = "ONLINE"
-			detailStatusLabel.Text = "HTTP: ✓  MCP: ✓"
+			detailStatusLabel.Text = "HTTP: OK  MCP: OK"
 			detailStatusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
 			stopPulseAnimation()
 		elseif not mcpConnected then
@@ -422,7 +422,7 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "WAITING"
-			detailStatusLabel.Text = "HTTP: ✓  MCP: ✗"
+			detailStatusLabel.Text = "HTTP: OK  MCP: X"
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
@@ -446,7 +446,7 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 			statusText.Text = "ERROR"
-			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.Text = "HTTP: X  MCP: X"
 			detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 			stopPulseAnimation()
 		elseif pluginState.consecutiveFailures > 5 then
@@ -456,7 +456,7 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "RETRY"
-			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.Text = "HTTP: X  MCP: X"
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		elseif pluginState.consecutiveFailures > 1 then
@@ -465,7 +465,7 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "CONNECTING"
-			detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+			detailStatusLabel.Text = "HTTP: X  MCP: X"
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
@@ -2231,7 +2231,7 @@ local function updateUIState()
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		statusText.Text = "OFFLINE"
-		detailStatusLabel.Text = "HTTP: ✗  MCP: ✗"
+		detailStatusLabel.Text = "HTTP: X  MCP: X"
 		detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 		connectButton.Text = "Connect"
 		stopPulseAnimation()
