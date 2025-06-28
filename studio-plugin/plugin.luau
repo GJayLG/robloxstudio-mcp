@@ -26,7 +26,7 @@ local screenGui = plugin:CreateDockWidgetPluginGui(
 	"MCPServerInterface",
 	DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 400, 500, 350, 450)
 )
-screenGui.Title = "MCP Server v1.4.0"
+screenGui.Title = "MCP Server v1.5.0"
 
 -- Main container with modern styling
 local mainFrame = Instance.new("Frame")
@@ -82,7 +82,7 @@ local versionLabel = Instance.new("TextLabel")
 versionLabel.Size = UDim2.new(1, 0, 0, 16)
 versionLabel.Position = UDim2.new(0, 0, 0, 32)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "AI Integration • v1.4.0"
+versionLabel.Text = "AI Integration • v1.5.0"
 versionLabel.TextColor3 = Color3.fromRGB(191, 219, 254)
 versionLabel.TextScaled = false
 versionLabel.TextSize = 12
