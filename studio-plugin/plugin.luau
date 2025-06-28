@@ -140,7 +140,7 @@ contentFrame.BackgroundTransparency = 1
 contentFrame.BorderSizePixel = 0
 contentFrame.ScrollBarThickness = 6
 contentFrame.ScrollBarImageColor3 = Color3.fromRGB(99, 102, 241)
-contentFrame.CanvasSize = UDim2.new(0, 0, 0, 280)
+contentFrame.CanvasSize = UDim2.new(0, 0, 0, 255)
 contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.None
 contentFrame.Parent = mainFrame
 
@@ -2209,6 +2209,7 @@ local function updateUIState()
 		detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 		detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 		connectButton.Text = "Disconnect"
+		connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		startPulseAnimation()
 		
 		-- Update button color directly instead of tweening
@@ -2234,6 +2235,7 @@ local function updateUIState()
 		detailStatusLabel.Text = "HTTP: X  MCP: X"
 		detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68)
 		connectButton.Text = "Connect"
+		connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		stopPulseAnimation()
 		
 		-- Update button color directly instead of tweening
