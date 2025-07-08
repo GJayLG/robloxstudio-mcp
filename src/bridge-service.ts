@@ -87,4 +87,12 @@ export class BridgeService {
       }
     }
   }
+
+  // Force cleanup all pending requests (used on disconnect)
+  clearAllPendingRequests() {
+    for (const [id, request] of this.pendingRequests.entries()) {
+      request.reject(new Error('Connection closed'));
+    }
+    this.pendingRequests.clear();
+  }
 }

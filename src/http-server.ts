@@ -9,6 +9,7 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
   let mcpServerActive = false;
   let lastMCPActivity = 0;
   let mcpServerStartTime = 0;
+  let lastPluginActivity = 0;
 
   // Track MCP server lifecycle
   const setMCPServerActive = (active: boolean) => {
@@ -32,6 +33,11 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
     return mcpServerActive && (Date.now() - lastMCPActivity < 15000); // 15 second timeout
   };
 
+  const isPluginConnected = () => {
+    // Consider plugin disconnected if no activity for 10 seconds
+    return pluginConnected && (Date.now() - lastPluginActivity < 10000);
+  };
+
   app.use(cors());
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -50,6 +56,15 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
   // Plugin readiness endpoint
   app.post('/ready', (req, res) => {
     pluginConnected = true;
+    lastPluginActivity = Date.now();
+    res.json({ success: true });
+  });
+
+  // Plugin disconnect endpoint
+  app.post('/disconnect', (req, res) => {
+    pluginConnected = false;
+    // Clear any pending requests when plugin disconnects
+    bridge.clearAllPendingRequests();
     res.json({ success: true });
   });
 
@@ -65,6 +80,12 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
 
   // Enhanced polling endpoint for Studio plugin
   app.get('/poll', (req, res) => {
+    // Always track that plugin is polling (shows it's trying to connect)
+    if (!pluginConnected) {
+      pluginConnected = true;
+    }
+    lastPluginActivity = Date.now();
+    
     if (!isMCPServerActive()) {
       res.status(503).json({ 
         error: 'MCP server not connected',
@@ -255,7 +276,7 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
 
 
   // Add methods to control and check server status
-  (app as any).isPluginConnected = () => pluginConnected;
+  (app as any).isPluginConnected = isPluginConnected;
   (app as any).setMCPServerActive = setMCPServerActive;
   (app as any).isMCPServerActive = isMCPServerActive;
   (app as any).trackMCPActivity = trackMCPActivity;

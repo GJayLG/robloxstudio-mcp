@@ -423,7 +423,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "WAITING"
-			detailStatusLabel.Text = "HTTP: OK  MCP: X"
+			-- Show pending state for MCP when waiting
+			detailStatusLabel.Text = "HTTP: OK  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
@@ -457,7 +458,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "RETRY"
-			detailStatusLabel.Text = "HTTP: X  MCP: X"
+			-- Show pending state when retrying
+			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		elseif pluginState.consecutiveFailures > 1 then
@@ -466,7 +468,8 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "CONNECTING"
-			detailStatusLabel.Text = "HTTP: X  MCP: X"
+			-- Show pending state when connecting
+			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
@@ -2207,7 +2210,12 @@ local function updateUIState()
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusText.Text = "CONNECTING"
-		detailStatusLabel.Text = "HTTP: ...  MCP: ..."
+		-- Show both as pending when first connecting
+		if pluginState.consecutiveFailures == 0 then
+			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
+		else
+			detailStatusLabel.Text = "HTTP: X  MCP: X"
+		end
 		detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 		connectButton.Text = "Disconnect"
 		connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2288,10 +2296,28 @@ local function deactivatePlugin()
 	pluginState.isActive = false
 	updateUIState()
 
+	-- Notify server that we're disconnecting
+	pcall(function()
+		HttpService:RequestAsync({
+			Url = pluginState.serverUrl .. "/disconnect",
+			Method = "POST",
+			Headers = {
+				["Content-Type"] = "application/json",
+			},
+			Body = HttpService:JSONEncode({
+				timestamp = tick(),
+			}),
+		})
+	end)
+
 	if pluginState.connection then
 		pluginState.connection:Disconnect()
 		pluginState.connection = nil
 	end
+	
+	-- Reset connection state
+	pluginState.consecutiveFailures = 0
+	pluginState.currentRetryDelay = 0.5
 end
 
 connectButton.Activated:Connect(function()
