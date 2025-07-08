@@ -26,9 +26,8 @@ local screenGui = plugin:CreateDockWidgetPluginGui(
 	"MCPServerInterface",
 	DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 400, 500, 350, 450)
 )
-screenGui.Title = "MCP Server v1.5.0"
+screenGui.Title = "MCP Server v1.5.1"
 
--- Main container with modern styling
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(1, 0, 1, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(17, 24, 39)
@@ -39,7 +38,6 @@ local mainCorner = Instance.new("UICorner")
 mainCorner.CornerRadius = UDim.new(0, 8)
 mainCorner.Parent = mainFrame
 
--- Header with gradient and modern styling
 local headerFrame = Instance.new("Frame")
 headerFrame.Size = UDim2.new(1, 0, 0, 60)
 headerFrame.Position = UDim2.new(0, 0, 0, 0)
@@ -59,7 +57,6 @@ headerGradient.Color = ColorSequence.new{
 headerGradient.Rotation = 45
 headerGradient.Parent = headerFrame
 
--- Title with icon
 local titleContainer = Instance.new("Frame")
 titleContainer.Size = UDim2.new(1, -70, 1, 0)
 titleContainer.Position = UDim2.new(0, 15, 0, 0)
@@ -82,7 +79,7 @@ local versionLabel = Instance.new("TextLabel")
 versionLabel.Size = UDim2.new(1, 0, 0, 16)
 versionLabel.Position = UDim2.new(0, 0, 0, 32)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "AI Integration • v1.5.0"
+versionLabel.Text = "AI Integration • v1.5.1"
 versionLabel.TextColor3 = Color3.fromRGB(191, 219, 254)
 versionLabel.TextScaled = false
 versionLabel.TextSize = 12
@@ -90,7 +87,6 @@ versionLabel.Font = Enum.Font.Jura
 versionLabel.TextXAlignment = Enum.TextXAlignment.Left
 versionLabel.Parent = titleContainer
 
--- Enhanced status indicator
 local statusContainer = Instance.new("Frame")
 statusContainer.Size = UDim2.new(0, 50, 0, 40)
 statusContainer.Position = UDim2.new(1, -60, 0, 10)
@@ -132,7 +128,6 @@ statusText.Font = Enum.Font.Jura
 statusText.TextXAlignment = Enum.TextXAlignment.Center
 statusText.Parent = statusContainer
 
--- Content area with sections
 local contentFrame = Instance.new("ScrollingFrame")
 contentFrame.Size = UDim2.new(1, -20, 1, -80)
 contentFrame.Position = UDim2.new(0, 10, 0, 70)
@@ -149,7 +144,6 @@ contentLayout.Padding = UDim.new(0, 12)
 contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 contentLayout.Parent = contentFrame
 
--- Connection Section
 local connectionSection = Instance.new("Frame")
 connectionSection.Size = UDim2.new(1, 0, 0, 110)
 connectionSection.BackgroundColor3 = Color3.fromRGB(31, 41, 55)
@@ -217,7 +211,6 @@ urlPadding.PaddingLeft = UDim.new(0, 12)
 urlPadding.PaddingRight = UDim.new(0, 12)
 urlPadding.Parent = urlInput
 
--- Status Section
 local statusSection = Instance.new("Frame")
 statusSection.Size = UDim2.new(1, 0, 0, 85)
 statusSection.BackgroundColor3 = Color3.fromRGB(31, 41, 55)
@@ -261,7 +254,6 @@ statusLabel.TextXAlignment = Enum.TextXAlignment.Left
 statusLabel.TextWrapped = true
 statusLabel.Parent = statusSection
 
--- Detailed status label for connection breakdown
 local detailStatusLabel = Instance.new("TextLabel")
 detailStatusLabel.Size = UDim2.new(1, 0, 0, 12)
 detailStatusLabel.Position = UDim2.new(0, 0, 0, 50)
@@ -275,7 +267,6 @@ detailStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 detailStatusLabel.TextWrapped = true
 detailStatusLabel.Parent = statusSection
 
--- Connect Button
 local connectButton = Instance.new("TextButton")
 connectButton.Size = UDim2.new(1, 0, 0, 48)
 connectButton.BackgroundColor3 = Color3.fromRGB(16, 185, 129)
@@ -292,21 +283,11 @@ local connectCorner = Instance.new("UICorner")
 connectCorner.CornerRadius = UDim.new(0, 12)
 connectCorner.Parent = connectButton
 
--- Remove gradient to fix text visibility
--- local connectGradient = Instance.new("UIGradient")
--- connectGradient.Color = ColorSequence.new{
---	ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 185, 129)),
---	ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 150, 105))
--- }
--- connectGradient.Rotation = 45
--- connectGradient.Parent = connectButton
 
 
--- Animation and interaction handlers
 local TweenService = game:GetService("TweenService")
 local buttonHover = false
 
--- Button hover effects (simplified without tweening)
 connectButton.MouseEnter:Connect(function()
 	buttonHover = true
 	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(5, 150, 105) or Color3.fromRGB(220, 38, 38)
@@ -317,7 +298,6 @@ connectButton.MouseLeave:Connect(function()
 	connectButton.BackgroundColor3 = not pluginState.isActive and Color3.fromRGB(16, 185, 129) or Color3.fromRGB(239, 68, 68)
 end)
 
--- Status indicator pulse animation
 local pulseAnimation = nil
 
 local function createPulseAnimation()
@@ -340,14 +320,12 @@ local function createPulseAnimation()
 end
 
 local function stopPulseAnimation()
-	-- Simply reset pulse to original state (no animation)
 	statusPulse.Size = UDim2.new(0, 16, 0, 16)
 	statusPulse.Position = UDim2.new(0, 0, 0, 0)
 	statusPulse.BackgroundTransparency = 0.7
 end
 
 local function startPulseAnimation()
-	-- For now, just keep the pulse visible (no animation to avoid errors)
 	statusPulse.Size = UDim2.new(0, 16, 0, 16)
 	statusPulse.Position = UDim2.new(0, 0, 0, 0)
 	statusPulse.BackgroundTransparency = 0.7
@@ -406,7 +384,6 @@ local function pollForRequests()
 		local data = HttpService:JSONDecode(result.Body)
 		local mcpConnected = data.mcpConnected == true
 		
-		-- Update status based on both HTTP server and MCP server status
 		if mcpConnected and not statusLabel.Text:find("Connected") then
 			statusLabel.Text = "Connected"
 			statusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
@@ -417,19 +394,16 @@ local function pollForRequests()
 			detailStatusLabel.TextColor3 = Color3.fromRGB(34, 197, 94)
 			stopPulseAnimation()
 		elseif not mcpConnected then
-			-- HTTP server connected but MCP server is not active
 			statusLabel.Text = "Waiting for MCP server"
 			statusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "WAITING"
-			-- Show pending state for MCP when waiting
 			detailStatusLabel.Text = "HTTP: OK  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
 		end
 
-		-- Process requests only if MCP server is connected
 		if data.request and mcpConnected then
 			local response = processRequest(data.request)
 			sendResponse(data.requestId, response)
@@ -458,7 +432,6 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "RETRY"
-			-- Show pending state when retrying
 			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
@@ -468,7 +441,6 @@ local function pollForRequests()
 			statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 			statusText.Text = "CONNECTING"
-			-- Show pending state when connecting
 			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 			detailStatusLabel.TextColor3 = Color3.fromRGB(245, 158, 11)
 			startPulseAnimation()
@@ -1609,7 +1581,6 @@ handlers.massCreateObjectsWithProperties = function(requestData)
 	}
 end
 
--- Smart Duplication Handler
 handlers.smartDuplicate = function(requestData)
 	local instancePath = requestData.instancePath
 	local count = requestData.count
@@ -1632,14 +1603,12 @@ handlers.smartDuplicate = function(requestData)
 		local success, newInstance = pcall(function()
 			local clone = instance:Clone()
 			
-			-- Apply name pattern
 			if options.namePattern then
 				clone.Name = options.namePattern:gsub("{n}", tostring(i))
 			else
 				clone.Name = instance.Name .. i
 			end
 
-			-- Apply position offset
 			if options.positionOffset and clone:IsA("BasePart") then
 				local offset = options.positionOffset
 				local currentPos = clone.Position
@@ -1650,7 +1619,6 @@ handlers.smartDuplicate = function(requestData)
 				)
 			end
 
-			-- Apply rotation offset
 			if options.rotationOffset and clone:IsA("BasePart") then
 				local offset = options.rotationOffset
 				local currentCFrame = clone.CFrame
@@ -1661,7 +1629,6 @@ handlers.smartDuplicate = function(requestData)
 				)
 			end
 
-			-- Apply scale offset
 			if options.scaleOffset and clone:IsA("BasePart") then
 				local offset = options.scaleOffset
 				local currentSize = clone.Size
@@ -1672,7 +1639,6 @@ handlers.smartDuplicate = function(requestData)
 				)
 			end
 
-			-- Apply property variations
 			if options.propertyVariations then
 				for propName, values in pairs(options.propertyVariations) do
 					if values and #values > 0 then
@@ -1684,7 +1650,6 @@ handlers.smartDuplicate = function(requestData)
 				end
 			end
 
-			-- Set parent (different parent for each or default to original parent)
 			if options.targetParents and options.targetParents[i] then
 				local targetParent = getInstanceByPath(options.targetParents[i])
 				if targetParent then
@@ -1732,7 +1697,6 @@ handlers.smartDuplicate = function(requestData)
 	}
 end
 
--- Mass Duplication Handler
 handlers.massDuplicate = function(requestData)
 	local duplications = requestData.duplications
 
@@ -1768,17 +1732,12 @@ handlers.massDuplicate = function(requestData)
 	}
 end
 
--- Safe formula evaluation helper (no loadstring/setfenv)
 local function evaluateFormula(formula, variables, instance, index)
-	-- Simple pattern-based formula evaluation for common cases
-	-- Supports: index, basic math operations, common functions
 	
 	local value = formula
 	
-	-- Replace variables
 	value = value:gsub("index", tostring(index))
 	
-	-- Replace instance properties if available
 	if instance and instance:IsA("BasePart") then
 		local pos = instance.Position
 		local size = instance.Size
@@ -1791,14 +1750,12 @@ local function evaluateFormula(formula, variables, instance, index)
 		value = value:gsub("magnitude", tostring(pos.magnitude))
 	end
 	
-	-- Replace custom variables
 	if variables then
 		for k, v in pairs(variables) do
 			value = value:gsub(k, tostring(v))
 		end
 	end
 	
-	-- Handle common math functions
 	value = value:gsub("sin%(([%d%.%-]+)%)", function(x) return tostring(math.sin(tonumber(x) or 0)) end)
 	value = value:gsub("cos%(([%d%.%-]+)%)", function(x) return tostring(math.cos(tonumber(x) or 0)) end)
 	value = value:gsub("sqrt%(([%d%.%-]+)%)", function(x) return tostring(math.sqrt(tonumber(x) or 0)) end)
@@ -1806,43 +1763,33 @@ local function evaluateFormula(formula, variables, instance, index)
 	value = value:gsub("floor%(([%d%.%-]+)%)", function(x) return tostring(math.floor(tonumber(x) or 0)) end)
 	value = value:gsub("ceil%(([%d%.%-]+)%)", function(x) return tostring(math.ceil(tonumber(x) or 0)) end)
 	
-	-- Simple arithmetic evaluation for basic expressions
-	-- This is a very basic evaluator - only supports simple cases
 	local result = tonumber(value)
 	if result then
 		return result, nil
 	end
 	
-	-- Try to evaluate simple arithmetic manually
 	local success, evalResult = pcall(function()
-		-- For very basic cases, try to parse manually
-		-- Support patterns like: "5", "index * 2", "10 + index", etc.
 		
-		-- Simple number
 		local num = tonumber(value)
 		if num then
 			return num
 		end
 		
-		-- Simple multiplication: "number * number"
 		local a, b = value:match("^([%d%.%-]+)%s*%*%s*([%d%.%-]+)$")
 		if a and b then
 			return (tonumber(a) or 0) * (tonumber(b) or 0)
 		end
 		
-		-- Simple addition: "number + number"  
 		a, b = value:match("^([%d%.%-]+)%s*%+%s*([%d%.%-]+)$")
 		if a and b then
 			return (tonumber(a) or 0) + (tonumber(b) or 0)
 		end
 		
-		-- Simple subtraction: "number - number"
 		a, b = value:match("^([%d%.%-]+)%s*%-%s*([%d%.%-]+)$")
 		if a and b then
 			return (tonumber(a) or 0) - (tonumber(b) or 0)
 		end
 		
-		-- Simple division: "number / number"
 		a, b = value:match("^([%d%.%-]+)%s*/%s*([%d%.%-]+)$")
 		if a and b then
 			local divisor = tonumber(b) or 1
@@ -1857,12 +1804,10 @@ local function evaluateFormula(formula, variables, instance, index)
 	if success and type(evalResult) == "number" then
 		return evalResult, nil
 	else
-		-- Fallback: return the index for simple cases
 		return index, "Complex formulas not supported - using index value"
 	end
 end
 
--- Calculated Property Handler
 handlers.setCalculatedProperty = function(requestData)
 	local paths = requestData.paths
 	local propertyName = requestData.propertyName
@@ -1937,7 +1882,6 @@ handlers.setCalculatedProperty = function(requestData)
 	}
 end
 
--- Relative Property Handler
 handlers.setRelativeProperty = function(requestData)
 	local paths = requestData.paths
 	local propertyName = requestData.propertyName
@@ -1960,7 +1904,6 @@ handlers.setRelativeProperty = function(requestData)
 				local currentValue = instance[propertyName]
 				local newValue
 
-				-- Handle Vector3 properties with component selection
 				if component and typeof(currentValue) == "Vector3" then
 					local x, y, z = currentValue.X, currentValue.Y, currentValue.Z
 					local targetValue = value
@@ -1989,7 +1932,6 @@ handlers.setRelativeProperty = function(requestData)
 					end
 					
 					newValue = Vector3.new(x, y, z)
-				-- Handle Color3 properties
 				elseif typeof(currentValue) == "Color3" and typeof(value) == "Color3" then
 					local r, g, b = currentValue.R, currentValue.G, currentValue.B
 					
@@ -2008,7 +1950,6 @@ handlers.setRelativeProperty = function(requestData)
 					elseif operation == "multiply" then
 						newValue = Color3.new(r * value.R, g * value.G, b * value.B)
 					end
-				-- Handle numeric properties
 				elseif type(currentValue) == "number" and type(value) == "number" then
 					if operation == "add" then
 						newValue = currentValue + value
@@ -2021,7 +1962,6 @@ handlers.setRelativeProperty = function(requestData)
 					elseif operation == "power" then
 						newValue = currentValue ^ value
 					end
-				-- Handle Vector3 properties (all components)
 				elseif typeof(currentValue) == "Vector3" and type(value) == "number" then
 					local x, y, z = currentValue.X, currentValue.Y, currentValue.Z
 					
@@ -2089,7 +2029,6 @@ handlers.setRelativeProperty = function(requestData)
 	}
 end
 
--- Script Source Management Handler
 handlers.getScriptSource = function(requestData)
 	local instancePath = requestData.instancePath
 	
@@ -2102,7 +2041,6 @@ handlers.getScriptSource = function(requestData)
 		return { error = "Instance not found: " .. instancePath }
 	end
 	
-	-- Check if the instance is a script
 	if not instance:IsA("BaseScript") then
 		return { error = "Instance is not a script: " .. instance.ClassName }
 	end
@@ -2126,7 +2064,6 @@ handlers.getScriptSource = function(requestData)
 	end
 end
 
--- Safe Script Source Setting Handler (NO loadstring/setfenv)
 handlers.setScriptSource = function(requestData)
 	local instancePath = requestData.instancePath
 	local newSource = requestData.source
@@ -2140,17 +2077,14 @@ handlers.setScriptSource = function(requestData)
 		return { error = "Instance not found: " .. instancePath }
 	end
 	
-	-- Check if the instance is a script
 	if not instance:IsA("BaseScript") then
 		return { error = "Instance is not a script: " .. instance.ClassName }
 	end
 	
-	-- Approach 1: Try direct source assignment (safest)
 	local success, result = pcall(function()
 		local oldSource = instance.Source
 		instance.Source = newSource
 		
-		-- Create undo waypoint
 		ChangeHistoryService:SetWaypoint("Set script source: " .. instance.Name)
 		
 		return {
@@ -2165,20 +2099,17 @@ handlers.setScriptSource = function(requestData)
 	if success then
 		return result
 	else
-		-- Approach 2: Try create and replace method if direct assignment fails
 		local replaceSuccess, replaceResult = pcall(function()
 			local parent = instance.Parent
 			local name = instance.Name
 			local className = instance.ClassName
 			local enabled = instance.Enabled
 			
-			-- Create new script with the new source
 			local newScript = Instance.new(className)
 			newScript.Name = name
 			newScript.Source = newSource
 			newScript.Enabled = enabled
 			
-			-- Replace the old script
 			newScript.Parent = parent
 			instance:Destroy()
 			
@@ -2210,7 +2141,6 @@ local function updateUIState()
 		statusIndicator.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusPulse.BackgroundColor3 = Color3.fromRGB(245, 158, 11)
 		statusText.Text = "CONNECTING"
-		-- Show both as pending when first connecting
 		if pluginState.consecutiveFailures == 0 then
 			detailStatusLabel.Text = "HTTP: ...  MCP: ..."
 		else
@@ -2221,12 +2151,10 @@ local function updateUIState()
 		connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		startPulseAnimation()
 		
-		-- Update button color directly instead of tweening
 		if not buttonHover then
 			connectButton.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
 		end
 		
-		-- No gradient needed
 		
 		urlInput.TextEditable = false
 		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
@@ -2243,12 +2171,10 @@ local function updateUIState()
 		connectButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		stopPulseAnimation()
 		
-		-- Update button color directly instead of tweening
 		if not buttonHover then
 			connectButton.BackgroundColor3 = Color3.fromRGB(16, 185, 129)
 		end
 		
-		-- No gradient needed
 		
 		urlInput.TextEditable = true
 		urlInput.BackgroundColor3 = Color3.fromRGB(55, 65, 81)
@@ -2296,7 +2222,6 @@ local function deactivatePlugin()
 	pluginState.isActive = false
 	updateUIState()
 
-	-- Notify server that we're disconnecting
 	pcall(function()
 		HttpService:RequestAsync({
 			Url = pluginState.serverUrl .. "/disconnect",
@@ -2315,7 +2240,6 @@ local function deactivatePlugin()
 		pluginState.connection = nil
 	end
 	
-	-- Reset connection state
 	pluginState.consecutiveFailures = 0
 	pluginState.currentRetryDelay = 0.5
 end
