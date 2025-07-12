@@ -730,34 +730,31 @@ class RobloxStudioMCPServer {
   }
 
   async run() {
-    // Start HTTP server for Studio plugin communication
     const port = process.env.ROBLOX_STUDIO_PORT ? parseInt(process.env.ROBLOX_STUDIO_PORT) : 3002;
+    const host = process.env.ROBLOX_STUDIO_HOST || '0.0.0.0';
     const httpServer = createHttpServer(this.tools, this.bridge);
     
     await new Promise<void>((resolve) => {
-      httpServer.listen(port, () => {
-        console.error(`HTTP server listening on port ${port} for Studio plugin`);
+      httpServer.listen(port, host, () => {
+        console.error(`HTTP server listening on ${host}:${port} for Studio plugin`);
         resolve();
       });
     });
 
-    // Start MCP server immediately (don't wait for plugin)
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('Roblox Studio MCP server running on stdio');
     
-    // Mark MCP server as active
     (httpServer as any).setMCPServerActive(true);
     console.error('MCP server marked as active');
     
-    // Monitor plugin and MCP server connection status
     console.error('Waiting for Studio plugin to connect...');
+    
     setInterval(() => {
       const pluginConnected = (httpServer as any).isPluginConnected();
       const mcpActive = (httpServer as any).isMCPServerActive();
       
       if (pluginConnected && mcpActive) {
-        // Both connected - no need to spam logs
       } else if (pluginConnected && !mcpActive) {
         console.error('Studio plugin connected, but MCP server inactive');
       } else if (!pluginConnected && mcpActive) {
@@ -765,9 +762,8 @@ class RobloxStudioMCPServer {
       } else {
         console.error('Waiting for connections...');
       }
-    }, 5000); // Reduced frequency to avoid spam
+    }, 5000);
     
-    // Periodic cleanup of old requests
     setInterval(() => {
       this.bridge.cleanupOldRequests();
     }, 5000);
