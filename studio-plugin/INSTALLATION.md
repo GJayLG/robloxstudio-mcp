@@ -68,6 +68,22 @@ claude mcp add robloxstudio-mcp
 }
 ```
 
+<details>
+<summary>Note for native Windows users</summary>
+If you encounter issues, you may need to run it through `cmd`. Update your configuration like this:
+
+```json
+{
+  "mcpServers": {
+    "robloxstudio-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "robloxstudio-mcp@latest"]
+    }
+  }
+}
+```
+</details>
+
 ## 🎯 How It Works
 
 1. **🤖 AI calls tool** → MCP server queues request

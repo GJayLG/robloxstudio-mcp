@@ -26,6 +26,22 @@ claude mcp add robloxstudio -- npx -y robloxstudio-mcp
 }
 ```
 
+<details>
+<summary>Note for native Windows users</summary>
+If you encounter issues, you may need to run it through `cmd`. Update your configuration like this:
+
+```json
+{
+  "mcpServers": {
+    "robloxstudio-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "robloxstudio-mcp@latest"]
+    }
+  }
+}
+```
+</details>
+
 ## Studio Plugin Setup (Required)
 
 The MCP server requires a companion Roblox Studio plugin:
